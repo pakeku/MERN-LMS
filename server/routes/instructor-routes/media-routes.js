@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const fs = require("fs");
 const {
   uploadMediaToCloudinary,
   deleteMediaFromCloudinary,
@@ -12,6 +13,8 @@ const upload = multer({ dest: "uploads/" });
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const result = await uploadMediaToCloudinary(req.file.path);
+    
+    console.log(result);
     res.status(200).json({
       success: true,
       data: result,
@@ -20,6 +23,9 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     console.log(e);
 
     res.status(500).json({ success: false, message: "Error uploading file" });
+  } finally {
+    // delete file from server
+    fs.unlinkSync(req.file.path);
   }
 });
 
