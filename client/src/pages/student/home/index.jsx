@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useContext, useEffect } from "react";
 import { StudentContext } from "@/context/student-context";
 import {
-  checkCoursePurchaseInfoService,
   fetchStudentViewCourseListService,
 } from "@/services";
 import { AuthContext } from "@/context/auth-context";
@@ -34,18 +33,7 @@ function StudentHomePage() {
   }
 
   async function handleCourseNavigate(getCurrentCourseId) {
-    const response = await checkCoursePurchaseInfoService(
-      getCurrentCourseId,
-      auth?.user?._id
-    );
-
-    if (response?.success) {
-      if (response?.data) {
-        navigate(`/course-progress/${getCurrentCourseId}`);
-      } else {
-        navigate(`/course/details/${getCurrentCourseId}`);
-      }
-    }
+    navigate(`/course/details/${getCurrentCourseId}`);
   }
 
   useEffect(() => {
@@ -86,7 +74,7 @@ function StudentHomePage() {
         </div>
       </section>
       <section className="py-12 px-4 lg:px-8">
-        <h2 className="text-2xl font-bold mb-6">Featured COourses</h2>
+        <h2 className="text-2xl font-bold mb-6">Featured Courses</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
             studentViewCoursesList.map((courseItem) => (
@@ -101,7 +89,7 @@ function StudentHomePage() {
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-bold mb-2">{courseItem?.title}</h3>
+                  <h3 className="font-bold mb-2">{courseItem?.title} {courseItem?._id}</h3>
                   <p className="text-sm text-gray-700 mb-2">
                     {courseItem?.instructorName}
                   </p>

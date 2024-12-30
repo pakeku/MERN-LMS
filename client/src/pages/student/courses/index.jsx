@@ -14,7 +14,6 @@ import { filterOptions, sortOptions } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import {
-  checkCoursePurchaseInfoService,
   fetchStudentViewCourseListService,
 } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
@@ -88,18 +87,7 @@ function StudentViewCoursesPage() {
   }
 
   async function handleCourseNavigate(getCurrentCourseId) {
-    const response = await checkCoursePurchaseInfoService(
-      getCurrentCourseId,
-      auth?.user?._id
-    );
-
-    if (response?.success) {
-      if (response?.data) {
-        navigate(`/course-progress/${getCurrentCourseId}`);
-      } else {
-        navigate(`/course/details/${getCurrentCourseId}`);
-      }
-    }
+    return navigate(`/course/details/${getCurrentCourseId}`);
   }
 
   useEffect(() => {
@@ -215,11 +203,10 @@ function StudentViewCoursesPage() {
                         </span>
                       </p>
                       <p className="text-[16px] text-gray-600 mt-3 mb-2">
-                        {`${courseItem?.curriculum?.length} ${
-                          courseItem?.curriculum?.length <= 1
-                            ? "Lecture"
-                            : "Lectures"
-                        } - ${courseItem?.level.toUpperCase()} Level`}
+                        {`${courseItem?.curriculum?.length} ${courseItem?.curriculum?.length <= 1
+                          ? "Lecture"
+                          : "Lectures"
+                          } - ${courseItem?.level.toUpperCase()} Level`}
                       </p>
                       <p className="font-bold text-lg">
                         ${courseItem?.pricing}
